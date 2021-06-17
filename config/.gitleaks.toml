@@ -1,0 +1,287 @@
+title = "scanner gitleaks config"
+
+#####
+# https://github.com/upenn-libraries/omeka_classic/blob/master/.gitleaks.toml
+#####
+
+# Vendor rules
+[[rules]]
+description = "AWS cred file info"
+regex = '''(?i)(aws_access_key_id|aws_secret_access_key)(.{0,20})?=.[0-9a-zA-Z\/+]{20,40}'''
+tags = ["AWS"]
+
+[[rules]]
+description = "AWS MWS key"
+regex = '''amzn\.mws\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'''
+tags = ["key", "AWS", "MWS"]
+
+[[rules]]
+description = "AWS Secret Key"
+regex = '''(?i)aws(.{0,20})?(?-i)['\"][0-9a-zA-Z\/+]{40}['\"]'''
+tags = ["key", "AWS"]
+
+[[rules]]
+description = "Facebook Client ID"
+regex = '''(?i)(facebook|fb)(.{0,20})?['\"][0-9]{13,17}['\"]'''
+tags = ["key", "Facebook"]
+
+[[rules]]
+description = "Facebook Secret Key"
+regex = '''(?i)(facebook|fb)(.{0,20})?(?-i)['\"][0-9a-f]{32}['\"]'''
+tags = ["key", "Facebook"]
+
+[[rules]]
+description = "Github"
+regex = '''(?i)github(.{0,20})?(?-i)['\"][0-9a-zA-Z]{35,40}['\"]'''
+tags = ["key", "Github"]
+
+[[rules]]
+description = "Google API key"
+regex = '''AIza[0-9A-Za-z\\-_]{35}'''
+tags = ["key", "Google"]
+
+[[rules]]
+description = "Heroku API key"
+regex = '''(?i)heroku(.{0,20})?['"][0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}['"]'''
+tags = ["key", "Heroku"]
+
+[[rules]]
+description = "LinkedIn Client ID"
+regex = '''(?i)linkedin(.{0,20})?(?-i)['\"][0-9a-z]{12}['\"]'''
+tags = ["client", "LinkedIn"]
+
+[[rules]]
+description = "LinkedIn Secret Key"
+regex = '''(?i)linkedin(.{0,20})?['\"][0-9a-z]{16}['\"]'''
+tags = ["secret", "LinkedIn"]
+
+[[rules]]
+description = "MailChimp API key"
+regex = '''(?i)(mailchimp|mc)(.{0,20})?['"][0-9a-f]{32}-us[0-9]{1,2}['"]'''
+tags = ["key", "Mailchimp"]
+
+[[rules]]
+description = "Mailgun API key"
+regex = '''(?i)(mailgun|mg)(.{0,20})?['"][0-9a-z]{32}['"]'''
+tags = ["key", "Mailgun"]
+
+[[rules]]
+description = "PayPal Braintree access token"
+regex = '''access_token\$production\$[0-9a-z]{16}\$[0-9a-f]{32}'''
+tags = ["key", "Paypal"]
+
+[[rules]]
+description = "Picatic API key"
+regex = '''sk_live_[0-9a-z]{32}'''
+tags = ["key", "Picatic"]
+
+[[rules]]
+description = "Slack"
+regex = '''xox[baprs]-([0-9a-zA-Z]{10,48})?'''
+tags = ["key", "Slack"]
+
+[[rules]]
+description = "Slack Webhook"
+regex = '''https\:\/\/hooks\.slack\.com\/services\/T[a-zA-Z0-9_]{8,11}\/B[a-zA-Z0-9_]{8,11}\/[a-zA-Z0-9_]{24}'''
+tags = ["key", "slack"]
+
+[[rules]]
+description = "Stripe API key"
+regex = '''(?i)stripe(.{0,20})?['\"][sk|rk]_live_[0-9a-zA-Z]{24}'''
+tags = ["key", "Stripe"]
+
+[[rules]]
+description = "Square access token"
+regex = '''sq0atp-[0-9A-Za-z\-_]{22}'''
+tags = ["key", "square"]
+
+[[rules]]
+description = "Square OAuth secret"
+regex = '''sq0csp-[0-9A-Za-z\\-_]{43}'''
+tags = ["key", "square"]
+
+[[rules]]
+description = "Twilio API key"
+regex = '''(?i)twilio(.{0,20})?['\"][0-9a-f]{32}['\"]'''
+tags = ["key", "twilio"]
+
+[[rules]]
+description = "Twitter Client ID"
+regex = '''(?i)twitter(.{0,20})?['\"][0-9a-z]{18,25}['\"]'''
+tags = ["client", "Twitter"]
+
+[[rules]]
+description = "Twitter Secret Key"
+regex = '''(?i)twitter(.{0,20})?['\"][0-9a-z]{35,44}['\"]'''
+tags = ["key", "Twitter"]
+
+
+# Generic rules
+[[rules]]
+description = "Files with possible keys and credentials"
+file = '''(?i)(id_rsa|passwd|password|id_rsa.pub|pgpass|pem|key|shadow)'''
+
+[[rules]]
+description = "Password in URL"
+regex = '''[a-zA-Z]{3,10}:\/\/[^$][^:@]{3,20}:[^$][^:@]{3,40}@.{1,100}'''
+
+
+#####
+# https://github.com/NOAA-EDAB/NEesp/blob/main/.github/workflows/.gitleaks.toml
+#####
+
+[[rules]]
+description = "AWS Manager ID"
+regex = '''(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}'''
+tags = ["key", "AWS"]
+
+[[rules]]
+description = "Generic Credential"
+regex = '''(?i)(api_key|apikey|secret)(.{0,20})?['|"][0-9a-zA-Z]{16,45}['|"]'''
+tags = ["key", "API", "generic"]
+
+[[rules]]
+description = "SendGrid API Key"
+regex = '''SG\.[\w_]{16,32}\.[\w_]{16,64}'''
+tags = ["key", "SendGrid"]
+
+# This config contains a rules that checks for specific patterns. It also contains a global allowlist table
+# where you can define one or more allowlists.
+
+[[rules]]
+description = "AWS Access Key"
+regex = '''(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}'''
+tags = ["key", "AWS"]
+[rules.allowlist]
+  regexes = ['''(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA).*EXAMPLE''']
+  description = "Ignore AWS Example Key"
+
+[[rules]]
+description = "Asymmetric Private Key in Code"
+regex = '''-----BEGIN ((EC|PGP|DSA|RSA|OPENSSH) )?PRIVATE KEY( BLOCK)?-----'''
+tags = ["key","code", "AsymmetricPrivateKey"]
+
+[[rules]]
+description = "Asymmetric Private Key File"
+regex = '''-----BEGIN ((EC|PGP|DSA|RSA|OPENSSH) )?PRIVATE KEY( BLOCK)?-----'''
+tags = ["key","file", "AsymmetricPrivateKey"]
+file = '''(.*?)(pem|pkcs12|p12|pfx|pri|key|bin)$'''
+
+[[rules]]
+description = "Google OAuth Access Token"
+regex = 'ya29\\.[0-9A-Za-z\\-_]+'
+tags = ["key","token", "Google"]
+
+[[rules]]
+description = "Google OAuth Key File"
+regex = '''googleusercontent\.com.*client_secret.*'''
+tags = ["key","oauth","file", "Google"]
+file = '''json'''
+
+[[rules]]
+description = "Google OAuth Key"
+regex = '(\"client_secret\":\"[a-zA-Z0-9-_]{24}\")'
+tags = ["key","oauth","key", "Google"]
+
+[[rules]]
+description = "Google (GCP) Service Account"
+regex = '''"type": "service_account"'''
+tags = ["key","service_account", "Google"]
+
+[[rules]]
+description = "Dynatrace token"
+regex = '''dt0[a-zA-Z]{1}[0-9]{2}\.[A-Z0-9]{24}\.[A-Z0-9]{64}'''
+tags = ["key","token", "Dynatrace"]
+
+[[rules]]
+description = "Shopify shared secret"
+regex = '''shpss_[a-fA-F0-9]{32}'''
+tags = ["key","secret", "Shopify"]
+
+[[rules]]
+description = "Shopify access token"
+regex = '''shpat_[a-fA-F0-9]{32}'''
+tags = ["key","token", "Shopify"]
+
+[[rules]]
+description = "Shopify custom app access token"
+regex = '''shpca_[a-fA-F0-9]{32}'''
+tags = ["key","token", "Shopify"]
+
+[[rules]]
+description = "Shopify private app access token"
+regex = '''shppa_[a-fA-F0-9]{32}'''
+tags = ["key","token", "Shopify"]
+
+[[rules]]
+description = "WP-Config"
+regex='''define(.{0,20})?(DB_CHARSET|NONCE_SALT|LOGGED_IN_SALT|AUTH_SALT|NONCE_KEY|DB_HOST|DB_PASSWORD|AUTH_KEY|SECURE_AUTH_KEY|LOGGED_IN_KEY|DB_NAME|DB_USER)(.{0,20})?['|"].{10,120}['|"]'''
+tags = ["key", "API", "generic"]
+
+[[rules]]
+description = "Python secrets"
+regex = '''SECRET_KEY.{0,20}['|"].{10,120}['|"]'''
+tags = ["key","secret", "Python"]
+file = '''settings.py'''
+[rules.allowlist]
+  regexes = ['''(SECRET_KEY)(.*test)|(.*example)''',
+'''(SECRET_KEY).*{{(.*?)}}'''
+]
+description = "Ignore example key and env variable key"
+
+[[rules]]
+description = "Files with keys and credentials"
+file = '''(?i)(id_rsa|passwd|id_rsa.pub|asc|ovpn|cscfg|rdp|mdf|sdf|sqlite|sqlite3|bek|tpm|jks|psafe3|agilekeychain|keychain|pgpass|shadow|ftpconfig|git-credentials|htpasswd|pgpass|s3cfg|remote-sync.json|filezilla.xml|idea14.key|logins.json|secrets.yml|server.cfg|sftp-config.json|sshd_config)$'''
+
+[[rules]]
+description = "Generic Secret"
+regex = '''[s|S][e|E][c|C][r|R][e|E][t|T].{0,30}['\"\\s][0-9a-zA-Z]{32,45}['\"\\s]'''
+tags = ["key", "secret", "generic"]
+
+[[rules]]
+description = "Generic API Key"
+regex = '''[a|A][p|P][i|I][_]?[k|K][e|E][y|Y].{0,30}['\"\\s][0-9a-zA-Z]{32,45}['\"\\s]'''
+tags = ["key", "API", "generic"]
+
+# [[rules]]
+# description = "Env Var"
+# regex = '''(?i)(apikey|secret|key|api|password|pass|pw|host)=[0-9a-zA-Z-_.{}]{4,120}'''
+
+# [[rules]]
+# description = "Generic Credential 2"
+# regex = '''(?i)(dbpasswd|dbuser|dbname|dbhost|api_key|apikey|secret|key|api|password|user|guid|hostname|pw|auth)(.{0,20})?['|"]([0-9a-zA-Z-_\/+!{}/=]{4,120})['|"]'''
+# tags = ["key", "API", "generic"]
+# [rules.allowlist]
+#   description = "ignore slack, mailchimp, aws"
+#   regexes = [
+#       '''xox[baprs]-([0-9a-zA-Z]{10,48})''',
+#       '''(?i)(.{0,20})?['"][0-9a-f]{32}-us[0-9]{1,2}['"]''',
+#       '''(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}'''
+#   ]
+
+[[rules]]
+description = "High Entropy"
+regex = '''[0-9a-zA-Z-_!{}/=]{4,120}'''
+file = '''(?i)(dump.sql|high-entropy-misc.txt)$'''
+tags = ["entropy"]
+[[rules.Entropies]]
+  Min = "4.3"
+  Max = "7.0"
+[rules.allowlist]
+  description = "ignore ssh key and pems"
+  files = ['''(pem|ppk|env)$''']
+  paths = ['''(.*)?ssh''']
+
+[[rules]]
+description = "Potential bash var"
+regex='''(?i)(=)([0-9a-zA-Z-_!{}=]{4,120})'''
+tags = ["key", "bash", "API", "generic"]
+[[rules.Entropies]]
+  Min = "3.5"
+  Max = "4.5"
+  Group = "1"
+
+# This is the Global allowlist, if you put anything here it gets skipped
+[allowlist]
+description = "Image allowlists"
+files = ['''(.*?)(jpg|gif|doc|pdf|bin|zip|tar.gz|ttf|xcf)$''']
