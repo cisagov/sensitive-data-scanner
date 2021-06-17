@@ -14,8 +14,10 @@ fi
 
 timestamp=$(date +%Y-%m-%d-%H%M%S)
 
+i=0
 while read -r url; do
-  >&2 echo ">>>> Processing ${url}."
+  i=$((i + 1))
+  >&2 echo ">>>> Processing URL #${i}: ${url}"
   output_dir="${url#*github.com/}"
   output_file=${output_dir}/${timestamp}.serif.json
   mkdir -p "${output_dir}"
