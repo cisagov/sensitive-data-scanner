@@ -23,6 +23,20 @@ curl --silent --show-error --location "${GSA_AGENCY_LIST_URL}" | jq -r '.[].orgs
   sort --ignore-case --unique > "$gsa_orgs_file"
 
 
+>&2 echo ">>>> Fetching orgs list from government.github.com"
+
+github_gov_orgs=$(mktemp -t github_gov_orgs.XXXXXX)
+
+./scrape-github.py > "$github_gov_orgs"
+
+
+>&2 echo ">>>> Combining GSA and government.github.com org lists"
+
+all_orgs=$(mktemp -t all_orgs.XXXXXX)
+
+cat "$gsa_orgs_file" "$github_gov_orgs" | sort --ignore-case --unique > "$all_orgs"
+
+
 >&2 echo ">>>> Fetching code.json urls from GSA's list on GitHub."
 
 gsa_code_json_url_file=$(mktemp -t gsa_code_json_url.XXXXXX)
@@ -45,14 +59,14 @@ while read -r url; do
 done < "$gsa_code_json_url_file"
 
 # Convert a list of GitHub orgs into a list of repo URLs
->&2 echo ">>>> Converting GitHub orgs into repository URLs."
+>&2 echo ">>>> Converting all orgs into repository URLs."
 repo_urls_from_gsa_orgs_file=$(mktemp -t repo_urls_from_gsa_orgs.XXXXXX)
 
 while read -r org; do
   >&2 echo ">>>> Querying GitHub for repositories in ${org} organization."
   gh repo list "${org}" --limit 10000  | \
   awk '{print "https://github.com/"$1}' >> "$repo_urls_from_gsa_orgs_file"
-done < "$gsa_orgs_file"
+done < "$all_orgs"
 
 >&2 echo ">>>> Writing combinined repository URLs to ${1}"
 cat "${repo_urls_from_code_jsons_file}" "${repo_urls_from_gsa_orgs_file}" | \
