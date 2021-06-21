@@ -13,14 +13,13 @@ if [ "$#" -ne 1 ]; then
     exit 255
 fi
 
-AGENCY_LIST=https://raw.githubusercontent.com/GSA/code-gov-front-end/master/config/site/agency_list.json
-
+GSA_AGENCY_LIST_URL=https://raw.githubusercontent.com/GSA/code-gov-front-end/master/config/site/agency_list.json
 
 >&2 echo ">>>> Fetching orgs from GSA list on GitHub."
 
 gsa_orgs_file=$(mktemp -t gsa_orgs.XXXXXX)
 
-curl --silent --show-error --location "${AGENCY_LIST}" | jq -r '.[].orgs[]' | \
+curl --silent --show-error --location "${GSA_AGENCY_LIST_URL}" | jq -r '.[].orgs[]' | \
   sort --ignore-case --unique > "$gsa_orgs_file"
 
 
@@ -28,7 +27,7 @@ curl --silent --show-error --location "${AGENCY_LIST}" | jq -r '.[].orgs[]' | \
 
 gsa_code_json_url_file=$(mktemp -t gsa_code_json_url.XXXXXX)
 
-curl --silent --show-error --location "${AGENCY_LIST}" | jq -r '.[].codeUrl' | \
+curl --silent --show-error --location "${GSA_AGENCY_LIST_URL}" | jq -r '.[].codeUrl' | \
   sort --ignore-case --unique > "$gsa_code_json_url_file"
 
 
