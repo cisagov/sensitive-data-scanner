@@ -14,10 +14,14 @@ if [ "$#" -ne 1 ]; then
 fi
 
 GSA_AGENCY_LIST_URL=https://raw.githubusercontent.com/GSA/code-gov-front-end/master/config/site/agency_list.json
+
+# setup logging
+# shellcheck disable=SC2034
+# LOG_NAME used in sourced file
 LOG_NAME="GatherRepos"
 
 # shellcheck source=src/logging.sh
-source logging.sh
+source "$(dirname "${BASH_SOURCE[0]}")/logging.sh"
 
 log "Fetching orgs from GSA list on GitHub."
 

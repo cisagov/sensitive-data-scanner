@@ -22,6 +22,13 @@ Options:
 
 EOF
 )
+# setup logging
+# shellcheck disable=SC2034
+# LOG_NAME used in sourced file
+LOG_NAME="RunGitLeaks"
+
+# shellcheck source=src/logging.sh
+source "$(dirname "${BASH_SOURCE[0]}")/logging.sh"
 
 # Positional parameters
 PARAMS=""
@@ -70,7 +77,7 @@ URL_FILE=$1
 
 timestamp=$(date +%Y-%m-%d-%H%M%S)
 
-echo ">>>> Starting scan at ${timestamp} using ${THREADS} threads." >&2
+log "Starting scan at ${timestamp} using ${THREADS} threads."
 
 line_number=0
 while read -r url; do
@@ -78,11 +85,11 @@ while read -r url; do
   if (( line_number < SKIP_TO_LINE )); then
     continue
   fi
-  echo ">>>> Processing URL #${line_number}: ${url}" >&2
+  log "Processing URL #${line_number}: ${url}"
   output_dir="${url#*github.com/}"
   output_file=${output_dir}/${timestamp}.serif.json
   mkdir -p "${output_dir}"
   gitleaks --threads="${THREADS}" --format=sarif --report="${output_file}" --repo-url "${url}"
 done < "$URL_FILE"
 
-echo ">>>> All scans completed." >&2
+log "All scans completed."
