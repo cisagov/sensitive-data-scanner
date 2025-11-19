@@ -1,6 +1,8 @@
 # sensitive-data-scanner #
 
 [![GitHub Build Status](https://github.com/cisagov/sensitive-data-scanner/workflows/build/badge.svg)](https://github.com/cisagov/sensitive-data-scanner/actions)
+[![License](https://img.shields.io/github/license/cisagov/sensitive-data-scanner)](https://spdx.org/licenses/)
+[![CodeQL](https://github.com/cisagov/sensitive-data-scanner/workflows/CodeQL/badge.svg)](https://github.com/cisagov/sensitive-data-scanner/actions/workflows/codeql-analysis.yml)
 
 This is a generic skeleton project that can be used to quickly get a
 new [cisagov](https://github.com/cisagov) GitHub project started.
